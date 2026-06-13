@@ -209,9 +209,8 @@
   .theme-toggle button:hover { color: var(--text); }
   .theme-toggle button.active { background: var(--accent); color: #fff; }
 
-  .mock { margin-top: 14px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); display: flex; }
-  .mock-rail { flex-shrink: 0; width: 0; align-self: stretch; transition: width .4s cubic-bezier(.4,0,.2,1), background .3s; }
-  .mock-inner { flex: 1; padding: 34px; transition: background .3s; }
+  .mock { margin-top: 14px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); }
+  .mock-inner { padding: 34px; transition: background .3s; }
   .mock h3 { font-size: 24px; margin-bottom: 10px; transition: color .3s; letter-spacing: -.01em; }
   .mock p { font-size: 14px; max-width: 440px; margin-bottom: 20px; transition: color .3s; }
   .mock .btn { display: inline-block; padding: 11px 22px; border-radius: 9px; font-size: 14px; font-weight: 700; transition: all .3s; }
@@ -300,7 +299,6 @@
     </div>
 
     <div class="mock" id="mock">
-      <div class="mock-rail" id="mockRail"></div>
       <div class="mock-inner" id="mockInner">
         <span class="tag" id="mockTag">Accent</span>
         <h3 id="mockTitle">See the balance in context</h3>
@@ -724,14 +722,12 @@ function renderBalance(p){
   body.textContent = r.copy.body;
   body.style.color = hexToRgba(copy, 0.72);
 
-  const rail = document.getElementById('mockRail');                   // support share -> side-panel width
-  rail.style.background = '#'+p.support.hex;
-  rail.style.width = Math.round(10 + sShare * 150) + 'px';
-
-  const tag = document.getElementById('mockTag');
+  const tag = document.getElementById('mockTag');                     // support share -> label size
   tag.textContent = r.copy.tag;
   tag.style.background = '#'+p.support.hex;
   tag.style.color = textOn(p.support.hex);
+  tag.style.fontSize = Math.round(11 + sShare * 9) + 'px';
+  tag.style.padding = Math.round(3 + sShare * 5) + 'px ' + Math.round(8 + sShare * 12) + 'px';
 
   const btn = document.getElementById('mockBtn');                     // accent share -> CTA size
   btn.textContent = r.copy.btn;
