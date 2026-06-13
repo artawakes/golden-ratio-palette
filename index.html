@@ -289,7 +289,6 @@
   <div class="balance-card">
     <div class="ratio-controls" id="ratioControls"></div>
     <div class="balance-bar" id="balanceBar"></div>
-    <p class="ratio-explain" id="ratioExplain"></p>
 
     <div class="mock-bar">
       <span class="mock-bar-label">Preview</span>
@@ -520,7 +519,6 @@ const paletteEl = document.getElementById('palette');
 const formulaList = document.getElementById('formulaList');
 const wheel = document.getElementById('wheel');
 const balanceBar = document.getElementById('balanceBar');
-const ratioExplain = document.getElementById('ratioExplain');
 const toast = document.getElementById('toast');
 
 const PRESETS = ['2E3D5E','4F80F5','7C5AF5','5BB87E','E89B3C','F4C84C'];
@@ -682,7 +680,6 @@ function renderBalance(p){
     seg.innerHTML = `${pt.label}<span class="pct">${pct}%</span>`;
     balanceBar.appendChild(seg);
   });
-  ratioExplain.innerHTML = `Ratio <b>${r.sub}</b> — ${r.primary} parts primary, ${r.support} parts support, ${r.accent} part accent. The small accent share is what keeps it from feeling loud.`;
 
   // Role mapping:
   //  - background: white in light mode; a calculated dark tint in dark mode
