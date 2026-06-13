@@ -209,8 +209,9 @@
   .theme-toggle button:hover { color: var(--text); }
   .theme-toggle button.active { background: var(--accent); color: #fff; }
 
-  .mock { margin-top: 14px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); }
-  .mock-inner { padding: 34px; transition: background .3s; }
+  .mock { margin-top: 14px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); display: flex; }
+  .mock-rail { flex-shrink: 0; width: 0; align-self: stretch; transition: width .4s cubic-bezier(.4,0,.2,1), background .3s; }
+  .mock-inner { flex: 1; padding: 34px; transition: background .3s; }
   .mock h3 { font-size: 24px; margin-bottom: 10px; transition: color .3s; letter-spacing: -.01em; }
   .mock p { font-size: 14px; max-width: 440px; margin-bottom: 20px; transition: color .3s; }
   .mock .btn { display: inline-block; padding: 11px 22px; border-radius: 9px; font-size: 14px; font-weight: 700; transition: all .3s; }
@@ -299,6 +300,7 @@
     </div>
 
     <div class="mock" id="mock">
+      <div class="mock-rail" id="mockRail"></div>
       <div class="mock-inner" id="mockInner">
         <span class="tag" id="mockTag">Accent</span>
         <h3 id="mockTitle">See the balance in context</h3>
@@ -691,17 +693,30 @@ function renderBalance(p){
   const copy = ensureReadable(p.primary.hsl, bg);   // stays primary's hue, readable on bg
   inner.style.background = '#'+bg;
 
-  document.getElementById('mockTitle').style.color = '#'+copy;
+  // The card rebalances with the selected ratio: each color's prominence
+  // scales with its share, so the preview actually demonstrates the proportion.
+  const totalShare = r.primary + r.support + r.accent;
+  const pShare = r.primary / totalShare, sShare = r.support / totalShare, aShare = r.accent / totalShare;
+
+  const title = document.getElementById('mockTitle');
+  title.style.color = '#'+copy;
+  title.style.fontSize = Math.round(18 + pShare * 26) + 'px';        // primary share -> headline size
   document.getElementById('mockText').style.color = hexToRgba(copy, 0.72);
+
+  const rail = document.getElementById('mockRail');                   // support share -> side-panel width
+  rail.style.background = '#'+p.support.hex;
+  rail.style.width = Math.round(10 + sShare * 150) + 'px';
 
   const tag = document.getElementById('mockTag');
   tag.textContent = 'Label';
   tag.style.background = '#'+p.support.hex;
   tag.style.color = textOn(p.support.hex);
 
-  const btn = document.getElementById('mockBtn');
+  const btn = document.getElementById('mockBtn');                     // accent share -> CTA size
   btn.style.background = '#'+p.accent.hex;
   btn.style.color = textOn(p.accent.hex);
+  btn.style.fontSize = Math.round(12 + aShare * 26) + 'px';
+  btn.style.padding = Math.round(8 + aShare * 16) + 'px ' + Math.round(16 + aShare * 26) + 'px';
 }
 
 function renderAll(hex){
